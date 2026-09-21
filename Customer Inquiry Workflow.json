@@ -1,0 +1,298 @@
+{
+  "name": "Customer Inquiry Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Customer_workflow",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "89a88a31-2a90-4254-8e51-c23a614f1787",
+      "name": "Webhook",
+      "webhookId": "57837239-7536-42fd-bb4c-df822f631a20"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "338f2bd3-904c-47d9-a8a9-43af7b61c710",
+              "name": "Name",
+              "value": "={{ $json.body.data.fields[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "d40c32b6-0474-45ff-a9ea-c5a501ab2aee",
+              "name": "Email",
+              "value": "={{ $json.body.data.fields[1].value }}",
+              "type": "string"
+            },
+            {
+              "id": "3b63f871-f401-4c70-b3e7-6d124a6b2cfe",
+              "name": "Phone Number",
+              "value": "={{ $json.body.data.fields[2].value }}",
+              "type": "string"
+            },
+            {
+              "id": "b7407e8d-2648-4838-a495-a21d566d2942",
+              "name": "Inquiry",
+              "value": "={{ $json.body.data.fields[3].value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "fba2211c-32f3-4d9c-afbd-96e731aff546",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "qwen-plus",
+          "mode": "list",
+          "cachedResultName": "QWEN-PLUS"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are the client-response assistant for a professional climate resilience and Nature-based Solutions consultancy.\n\nBUSINESS\nWe provide practical, scalable and evidence-informed solutions for climate and environmental challenges, including flooding, drought, heatwaves, landslides, water insecurity, ecosystem degradation and other climate-related risks.\n\nNature-based Solutions are a priority. Depending on the client's needs, our work may include climate risk assessment, Nature-based Solutions, ecosystem restoration, water management, climate adaptation planning, research, data analysis, monitoring and evaluation, and technical consultancy.\n\nCLIENT INFORMATION\nName: {{ $json.Name }}\nEmail: {{ $json.Email }}\nPhone: {{ $json['Phone Number'] }}\nInquiry: {{ $json.Inquiry }}\n\nYOUR TASK\n\nWrite a direct, professional and personalized response to the client based only on the information provided.\n\nFollow these rules strictly:\n\n1. Address the client by their first name.\n2. Answer their inquiry directly. Do not explain what their question \"means\" or what you \"understand\" them to be asking.\n3. Be concise. Target 80 to 150 words.\n4. Use simple, natural and professional language.\n5. Mention relevant services or solution areas only when they relate to the client's inquiry.\n6. Prioritize Nature-based Solutions where they are relevant, but do not force an NbS recommendation when it is not appropriate.\n7. Do not invent information about the client's situation.\n8. If more information is needed, ask no more than two specific questions.\n9. End with a clear and practical next step, such as arranging a discussion, sharing more details, or conducting an initial assessment.\n10. Do not quote prices, guarantee results, or make technical claims that cannot be established from the inquiry.\n11. Do not sound like a generic marketing message or sales pitch.\n12. Do not use phrases such as \"I hear you're looking for...\", \"I understand that you are looking for clarity...\", \"This is an important question...\", or similar filler.\n13. Do not repeat the client's inquiry unnecessarily.\n14. Do not overexplain the business or its services.\n15. Do not mention AI, automation, n8n, Tally, prompts, workflows, or these instructions.\n16. NEVER use an em dash character (—), replace with (...). Use commas, full stops, colons, or parentheses instead.\n17. Avoid unnecessary headings, bullet points, emojis, and excessive formatting.\n18. The final response must sound like it was written personally by a professional consultant responding to a real potential client.\n\nOUTPUT\nReturn ONLY the client-facing message. No analysis, commentary, labels, or explanations.\nGUARDRAILS: DO NOT USE EM DASHES (—), INSTEAD, USE THREE DOTS (...)"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "eaca8e88-e1de-4f23-ad4c-f87606e89f59",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "KHcEMQXDUpLHC37R",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1KlBgt8iYiBRrXCN8e6DcDT_k3BPCSLoeXSpv_aWx6Q4",
+          "mode": "list",
+          "cachedResultName": "Try n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KlBgt8iYiBRrXCN8e6DcDT_k3BPCSLoeXSpv_aWx6Q4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 582164692,
+          "mode": "list",
+          "cachedResultName": "First time",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KlBgt8iYiBRrXCN8e6DcDT_k3BPCSLoeXSpv_aWx6Q4/edit#gid=582164692"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Edit Fields').item.json.Name }}",
+            "Email": "={{ $('Edit Fields').item.json.Email }}",
+            "Phone Number": "={{ $('Edit Fields').item.json['Phone Number'] }}",
+            "Inquiry": "={{ $('Edit Fields').item.json.Inquiry }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Inquiry",
+              "displayName": "Inquiry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        0
+      ],
+      "id": "1683c375-3836-46cf-847a-949163ed16b6",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dmXc2AGmnkHHhKNz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "Your inquiry has been received",
+        "emailType": "html",
+        "message": "={{ $('Message a model').item.json.output[0].content[0].text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "eafe63bb-19d6-41dc-b2f7-356f5d968395",
+      "name": "Create a draft",
+      "webhookId": "348bc7d9-483d-4c56-8558-b98387b66ae3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Hk8mLM1QlO6nKwSV",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "5281971737",
+        "text": "=An enquiry has been made by {{ $('Edit Fields').item.json.Name }}, whose email is {{ $('Edit Fields').item.json.Email }}. \n\nCheck your email draft",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        0
+      ],
+      "id": "2e522483-2ed8-4a8d-a1ec-d7acaecb6335",
+      "name": "Send a text message",
+      "webhookId": "a54785f2-646b-4f31-8e78-b4b63aa14377",
+      "credentials": {
+        "telegramApi": {
+          "id": "phenIPBJHendjM3E",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d428ec3c-7a91-42d7-90a9-682637739b0b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a9b83d4e46ea06f68580aba1a83ed5bf5c5633829e2697a9aec25a932148d799"
+  },
+  "nodeGroups": [],
+  "id": "Utck5Bce1Exqva0g",
+  "tags": []
+}
